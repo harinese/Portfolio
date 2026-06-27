@@ -395,37 +395,42 @@
         /* Mobile fallback: orbit is too small on phones */
         @media (max-width: 768px) {
             .orbit-container {
-                width: 320px;
-                height: 320px;
+                width: 280px;
+                height: 280px;
             }
 
             .orbit-ring--inner {
-                width: 180px;
-                height: 180px;
+                width: 150px;
+                height: 150px;
             }
 
             .orbit-ring--outer {
-                width: 290px;
-                height: 290px;
+                width: 250px;
+                height: 250px;
             }
 
             .orbit-node i {
-                width: 36px;
-                height: 36px;
-                font-size: 1.2rem;
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
             }
 
             .orbit-node span {
-                font-size: 0.5rem;
+                font-size: 0.45rem;
+                padding: 0.1rem 0.3rem;
             }
 
             .orbit-core {
-                width: 60px;
-                height: 60px;
+                width: 54px;
+                height: 54px;
             }
 
             .orbit-core-icon {
-                font-size: 1.2rem;
+                font-size: 1.1rem;
+            }
+
+            .scene-skills .glass-card {
+                overflow: visible;
             }
         }
 
@@ -875,8 +880,11 @@
             ];
 
             const isMobile = window.innerWidth <= 768;
-            const innerRadius = isMobile ? 90 : 120;
-            const outerRadius = isMobile ? 145 : 190;
+            const innerRadius = isMobile ? 75 : 120;
+            const outerRadius = isMobile ? 125 : 190;
+
+            const nodeOffset = isMobile ? 16 : 23;
+            const nodeOffsetY = isMobile ? 22 : 30;
 
             const buildOrbit = (trackId, skills, radius) => {
                 const track = document.getElementById(trackId);
@@ -889,7 +897,7 @@
 
                     const node = document.createElement('div');
                     node.className = 'orbit-node';
-                    node.style.cssText = `--node-accent: ${skill.accent}; --node-glow: ${skill.glow}; margin-left: ${x - 23}px; margin-top: ${y - 30}px;`;
+                    node.style.cssText = `--node-accent: ${skill.accent}; --node-glow: ${skill.glow}; margin-left: ${x - nodeOffset}px; margin-top: ${y - nodeOffsetY}px;`;
 
                     node.innerHTML = `<i class="${skill.icon}"></i><span>${skill.name}</span>`;
                     track.appendChild(node);
