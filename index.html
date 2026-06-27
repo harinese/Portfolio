@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hari Babu S R - MCA Student & Full-Stack Developer">
+    <title>Hari Babu | Portfolio</title>
+    <!--link rel="stylesheet" href="style.css"-->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome for Social Icons (updated to latest for X icon support) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+    <link rel="icon" type="image/png" href="assets/favic.png">
+    <style>
+        :root {
+            --primary: #ffffff;
+            --bg-dark: #050505;
+            --glass-bg: rgba(10, 15, 25, 0.4);
+            /* slight blue/dark tint for tech */
+            --glass-border: rgba(100, 200, 255, 0.15);
+            --tech-accent: #38bdf8;
+            /* light blue tech accent */
+            --terminal-green: #4ade80;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--primary);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Interactive 3D WebGL Background */
+        .webgl-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background-color: #050505;
+            /* Deep tech black */
+        }
+
+        #webgl-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Subtle overlay so text remains razor sharp */
+        .webgl-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(5, 8, 15, 0.2) 0%, rgba(0, 0, 0, 0.7) 100%);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* Scroll Content */
+        main {
+            position: relative;
+            z-index: 10;
+        }
+
+        .step {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            perspective: 1000px;
+        }
+
+        /* Alignment rules for the "story" sections */
+        .scene-start {
+            justify-content: flex-start;
+            padding-left: 10vw;
+        }
+
+        /* Start to the left */
+        .scene-education {
+            justify-content: flex-end;
+            padding-right: 10vw;
+        }
+
+        /* Shift right */
+        .scene-skills {
+            justify-content: center;
+        }
+
+        /* Mid point */
+        .scene-projects {
+            justify-content: flex-start;
+            padding-left: 10vw;
+        }
+
+        /* Drive past it on the left */
+        .scene-mansion {
+            justify-content: center;
+        }
+
+        /* Final destination centered */
+
+        .spacer {
+            min-height: 50vh;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 3.5rem 3rem;
+            border-radius: 20px;
+            text-align: left;
+            max-width: 680px;
+            width: 100%;
+            opacity: 0;
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(80px) scale(0.95);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card.visible {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .terminal-header {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            color: var(--terminal-green);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.5px;
+            opacity: 0.9;
+        }
+
+        .glass-card h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #ffffff 0%, var(--tech-accent) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .glass-card h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #ffffff 30%, #a1a1aa 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .glass-card p {
+            font-size: 1.15rem;
+            font-weight: 300;
+            line-height: 1.6;
+            color: #e4e4e7;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--tech-accent), transparent);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -2rem;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--tech-accent);
+            box-shadow: 0 0 10px var(--tech-accent);
+        }
+
+        .timeline-item h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+            color: #fff;
+            background: none;
+            -webkit-text-fill-color: initial;
+        }
+
+        .timeline-date {
+            display: inline-block;
+            font-size: 0.9rem;
+            color: var(--tech-accent);
+            margin-bottom: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .timeline-item p {
+            font-size: 1rem;
+            color: #a1a1aa;
+        }
+
+        /* Skills Orbit */
+        .orbit-container {
+            position: relative;
+            width: 420px;
+            height: 420px;
+            margin: 1rem auto 0;
+        }
+
+        /* Central core */
+        .orbit-core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, rgba(56, 189, 248, 0.05) 60%, transparent 70%);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+        }
+
+        .orbit-core::before {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--tech-accent);
+            opacity: 0.6;
+            filter: blur(12px);
+            animation: core-pulse 3s ease-in-out infinite;
+        }
+
+        .orbit-core-icon {
+            font-size: 1.6rem;
+            color: #fff;
+            z-index: 1;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        @keyframes core-pulse {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.3); }
+        }
+
+        /* Orbit rings (visual guides) */
+        .orbit-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border-radius: 50%;
+            border: 1px solid rgba(56, 189, 248, 0.08);
+        }
+
+        .orbit-ring--inner {
+            width: 240px;
+            height: 240px;
+            transform: translate(-50%, -50%);
+        }
+
+        .orbit-ring--outer {
+            width: 380px;
+            height: 380px;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Rotating track */
+        .orbit-track {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .orbit-track--inner {
+            animation: orbit-spin 30s linear infinite;
+        }
+
+        .orbit-track--outer {
+            animation: orbit-spin 45s linear infinite reverse;
+        }
+
+
+
+        @keyframes orbit-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Individual skill node */
+        .orbit-node {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+            cursor: default;
+            transition: filter 0.3s ease;
+        }
+
+        /* Counter-rotation: cancel parent spin so nodes stay upright */
+        .orbit-track--inner .orbit-node {
+            animation: orbit-spin 30s linear infinite reverse;
+        }
+
+        .orbit-track--outer .orbit-node {
+            animation: orbit-spin 45s linear infinite;
+        }
+
+        .orbit-node:hover {
+            filter: brightness(1.4);
+        }
+
+        .orbit-node i {
+            font-size: 1.6rem;
+            color: var(--node-accent, var(--tech-accent));
+            background: rgba(10, 15, 25, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .orbit-node:hover i {
+            border-color: var(--node-accent, var(--tech-accent));
+            box-shadow: 0 0 16px -2px var(--node-glow, rgba(56, 189, 248, 0.4));
+        }
+
+        .orbit-node span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            color: #a1a1aa;
+            white-space: nowrap;
+            text-align: center;
+            background: rgba(10, 15, 25, 0.8);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+        }
+
+        /* Mobile fallback: orbit is too small on phones */
+        @media (max-width: 768px) {
+            .orbit-container {
+                width: 320px;
+                height: 320px;
+            }
+
+            .orbit-ring--inner {
+                width: 180px;
+                height: 180px;
+            }
+
+            .orbit-ring--outer {
+                width: 290px;
+                height: 290px;
+            }
+
+            .orbit-node i {
+                width: 36px;
+                height: 36px;
+                font-size: 1.2rem;
+            }
+
+            .orbit-node span {
+                font-size: 0.5rem;
+            }
+
+            .orbit-core {
+                width: 60px;
+                height: 60px;
+            }
+
+            .orbit-core-icon {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Projects */
+        .project-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .project-card {
+            display: block;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateX(10px);
+            border-color: var(--tech-accent);
+        }
+
+        .project-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .project-title::after {
+            content: '↗';
+            font-size: 1rem;
+            color: var(--tech-accent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover .project-title::after {
+            opacity: 1;
+        }
+
+        .project-tech {
+            font-size: 0.85rem;
+            color: var(--tech-accent);
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 0.8rem;
+        }
+
+        .project-card p {
+            font-size: 1rem;
+            color: #a1a1aa;
+        }
+
+        .project-card-internal {
+            display: block;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .project-card-internal:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .project-card-internal .project-title::after {
+            content: none;
+        }
+
+        .project-card-internal p {
+            font-size: 1rem;
+            color: #a1a1aa;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .project-badge {
+            font-size: 0.7rem;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .badge-flagship {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .badge-freelance {
+            background: rgba(168, 85, 247, 0.15);
+            color: #a855f7;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .badge-enterprise {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .badge-live {
+            background: rgba(74, 222, 128, 0.15);
+            color: #4ade80;
+            border: 1px solid rgba(74, 222, 128, 0.3);
+        }
+
+        .badge-deployed {
+            background: rgba(96, 165, 250, 0.15);
+            color: #60a5fa;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+
+        .badge-internal {
+            background: rgba(161, 161, 170, 0.15);
+            color: #a1a1aa;
+            border: 1px solid rgba(161, 161, 170, 0.3);
+        }
+
+        /* Contact and Socials */
+        .contact-card {
+            text-align: center;
+            /* Center the last card */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .contact-card p {
+            margin-bottom: 2rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .cta-button {
+            display: inline-block;
+            text-decoration: none;
+            background: #ffffff;
+            color: #050505;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            /* blocky tech feel */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            text-align: center;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(255, 255, 255, 0.2);
+            background: #f4f4f5;
+        }
+
+        /* Social Icon Grid */
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: #fff;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            background: var(--tech-accent);
+            color: #050505;
+            border-color: var(--tech-accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .glass-card h1 {
+                font-size: 2.5rem;
+            }
+
+            .glass-card h2 {
+                font-size: 1.8rem;
+            }
+
+            .glass-card {
+                padding: 2.5rem 1.5rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .step {
+                justify-content: center !important;
+                padding: 2rem !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="webgl-container">
+        <!-- Interactive 3D WebGL Scene -->
+        <canvas id="webgl-canvas"></canvas>
+    </div>
+
+    <main>
+        <!-- SCENE 1: The Start (Leaning on the Porsche) -->
+        <section class="step scene-start">
+            <div class="glass-card">
+                <div class="terminal-header">[ SYSTEM INITIALIZATION ] >> Subject IDENTIFIED</div>
+                <h1>Hari Babu S R</h1>
+                <p>MCA Student & Full-Stack Architect.<br><br>The city sleeps, but the servers don't. I specialize in
+                    architecting scalable solutions, bypassing technical limitations, and securing systems against the
+                    unknown.</p>
+            </div>
+        </section>
+
+        <!-- SCENE 2: The Journey Begins (Getting in the car) -->
+        <section class="step scene-education">
+            <div class="glass-card">
+                <div class="terminal-header">> trace_route --target=education</div>
+                <h2>The Origin Story</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h3>Masters of Computer Applications</h3>
+                        <span class="timeline-date">2026 – 2027 | GM University Davanagere</span>
+                        <p>Focusing on network security, cryptography, secure software development, and ethical hacking.
+                        </p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h3>Bachelors of Computer Applications</h3>
+                        <span class="timeline-date">2022 – 2025 | Don Bosco Degree College</span>
+                        <p>CGPA: 7.6 / 10. Built foundational knowledge in Python, full-stack dev, and database
+                            management.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE 3: The Toolkit -->
+        <section class="step scene-skills">
+            <div class="glass-card">
+                <div class="terminal-header">> ./load_modules.sh</div>
+                <h2>Tech Arsenal</h2>
+                <div class="orbit-container">
+                    <!-- Visual ring guides -->
+                    <div class="orbit-ring orbit-ring--inner"></div>
+                    <div class="orbit-ring orbit-ring--outer"></div>
+
+                    <!-- Glowing core -->
+                    <div class="orbit-core">
+                        <span class="orbit-core-icon">&lt;/&gt;</span>
+                    </div>
+
+                    <!-- Inner orbit: 6 skills, clockwise -->
+                    <div class="orbit-track orbit-track--inner" id="orbit-inner"></div>
+
+                    <!-- Outer orbit: 5 skills, counter-clockwise -->
+                    <div class="orbit-track orbit-track--outer" id="orbit-outer"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE 4: Driving through the city (Projects) -->
+        <section class="step scene-projects">
+            <div class="glass-card">
+                <div class="terminal-header">> exec scan --deployed-monoliths</div>
+                <h2>Live Operations</h2>
+                <div class="project-list">
+                    <a href="https://agrilensai.onrender.com/" target="_blank" class="project-card">
+                        <div class="project-title">AgriLens AI</div>
+                        <div class="project-meta">
+                            <span class="project-badge badge-flagship">Featured</span>
+                            <span class="project-badge badge-live">Live</span>
+                        </div>
+                        <div class="project-tech">React · JavaScript · Python · FastAPI · Gemini AI · Docker</div>
+                        <p>AI-powered agricultural lens for crop disease detection and smart farming insights.</p>
+                    </a>
+                    <a href="https://cora-b6o6.onrender.com" target="_blank" class="project-card">
+                        <div class="project-title">CORA</div>
+                        <div class="project-meta">
+                            <span class="project-badge badge-flagship">Featured</span>
+                            <span class="project-badge badge-live">Live</span>
+                        </div>
+                        <div class="project-tech">Flask · Vanilla JS · REST APIs</div>
+                        <p>Content-based filtering engine for personalized movie recommendations.</p>
+                    </a>
+                    <a href="https://tasselsbysaritha.me" target="_blank" class="project-card">
+                        <div class="project-title">Tassels by Saritha</div>
+                        <div class="project-meta">
+                            <span class="project-badge badge-freelance">Freelance</span>
+                            <span class="project-badge badge-live">Live</span>
+                        </div>
+                        <div class="project-tech">React · Vite</div>
+                        <p>Handcrafted tassel brand showcase with product catalog and client engagement.</p>
+                    </a>
+                    <a href="https://zyra-unique-events.vercel.app" target="_blank" class="project-card">
+                        <div class="project-title">Zyra Unique Events</div>
+                        <div class="project-meta">
+                            <span class="project-badge badge-freelance">Freelance</span>
+                            <span class="project-badge badge-live">Live</span>
+                        </div>
+                        <div class="project-tech">React</div>
+                        <p>Event management platform for planning and showcasing unique events.</p>
+                    </a>
+                    <a href="https://varadas-kitchen-oaxa.onrender.com" target="_blank" class="project-card">
+                        <div class="project-title">Varada's Kitchen</div>
+                        <div class="project-meta">
+                            <span class="project-badge badge-freelance">Freelance</span>
+                            <span class="project-badge badge-live">Live</span>
+                        </div>
+                        <div class="project-tech">React · JavaScript · Tailwind</div>
+                        <p>Responsive cloud kitchen platform with backend order management logic.</p>
+                    </a>
+                    <a href="https://harinese.github.io/GMU-leave-management/" target="_blank" class="project-card">
+                        <div class="project-title">GMU Leave Management Portal</div>
+                        <div class="project-meta">
+                            <span class="project-badge badge-enterprise">Enterprise</span>
+                            <span class="project-badge badge-deployed">Deployed</span>
+                        </div>
+                        <div class="project-tech">HTML · CSS · JavaScript</div>
+                        <p>University-grade leave management system for staff and administration workflows.</p>
+                    </a>
+                    <div class="project-card-internal">
+                        <div class="project-title">QR Attendance System</div>
+                        <div class="project-meta">
+                            <span class="project-badge badge-enterprise">Enterprise</span>
+                            <span class="project-badge badge-internal">Internal</span>
+                        </div>
+                        <div class="project-tech">Python · Flask · MySQL</div>
+                        <p>Automated attendance tracking via QR code scanning for institutional use.</p>
+                    </div>
+                    <div class="project-card-internal">
+                        <div class="project-title">Event Approval System</div>
+                        <div class="project-meta">
+                            <span class="project-badge badge-enterprise">Enterprise</span>
+                            <span class="project-badge badge-internal">Internal</span>
+                        </div>
+                        <div class="project-tech">Node.js · Express · Socket.IO · React · Vite · Tailwind CSS · MySQL</div>
+                        <p>Multi-tier event approval workflow with role-based access control for organizations.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE 5: Reaching the Mansion (Contact) -->
+        <section class="step scene-mansion">
+            <div class="glass-card contact-card">
+                <div class="terminal-header">> ping server_mansion --final</div>
+                <h2>Access Granted. Welcome to the Mansion.</h2>
+                <p>You've tracked me across the grid. Secure channels are open below.</p>
+
+                <div class="action-buttons">
+                    <a href="mailto:haribabusr78@gmail.com" class="cta-button">Initiate Secure Handshake</a>
+                </div>
+
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/hari-babu-nese-a29b27237/" target="_blank"
+                        aria-label="LinkedIn" class="social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://github.com/harinese/" target="_blank" aria-label="GitHub" class="social-icon">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://x.com/Hari_Nese" target="_blank" aria-label="X (Twitter)" class="social-icon">
+                        <i class="fa-brands fa-x-twitter"></i>
+                    </a>
+                    <a href="https://www.instagram.com/hari.nese/" target="_blank" aria-label="Instagram"
+                        class="social-icon">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://wa.me/918431534540" target="_blank" aria-label="WhatsApp"
+                        class="social-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Spacer for the final video frames -->
+        <section class="step spacer"></section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            // --- ORBIT SKILLS BUILDER ---
+            const innerSkills = [
+                { icon: 'devicon-python-plain', name: 'Python', accent: '#3776AB', glow: 'rgba(55, 118, 171, 0.4)' },
+                { icon: 'devicon-javascript-plain', name: 'JavaScript', accent: '#F7DF1E', glow: 'rgba(247, 223, 30, 0.4)' },
+                { icon: 'devicon-react-original', name: 'React', accent: '#61DAFB', glow: 'rgba(97, 218, 251, 0.4)' },
+                { icon: 'devicon-nextjs-plain', name: 'Next.js', accent: '#ffffff', glow: 'rgba(255, 255, 255, 0.25)' },
+                { icon: 'devicon-flask-original', name: 'Flask', accent: '#ffffff', glow: 'rgba(200, 200, 200, 0.25)' },
+                { icon: 'devicon-mongodb-plain', name: 'MongoDB', accent: '#47A248', glow: 'rgba(71, 162, 72, 0.4)' },
+            ];
+
+            const outerSkills = [
+                { icon: 'devicon-mysql-plain', name: 'MySQL', accent: '#4479A1', glow: 'rgba(68, 121, 161, 0.4)' },
+                { icon: 'devicon-git-plain', name: 'Git', accent: '#F05032', glow: 'rgba(240, 80, 50, 0.4)' },
+                { icon: 'devicon-tensorflow-original', name: 'ML', accent: '#FF6F00', glow: 'rgba(255, 111, 0, 0.4)' },
+                { icon: 'devicon-fastapi-plain', name: 'REST APIs', accent: '#38bdf8', glow: 'rgba(56, 189, 248, 0.4)' },
+                { icon: 'devicon-tailwindcss-original', name: 'Tailwind', accent: '#06B6D4', glow: 'rgba(6, 182, 212, 0.4)' },
+            ];
+
+            const isMobile = window.innerWidth <= 768;
+            const innerRadius = isMobile ? 90 : 120;
+            const outerRadius = isMobile ? 145 : 190;
+
+            const buildOrbit = (trackId, skills, radius) => {
+                const track = document.getElementById(trackId);
+                const angleStep = (2 * Math.PI) / skills.length;
+
+                skills.forEach((skill, i) => {
+                    const angle = angleStep * i - Math.PI / 2;
+                    const x = Math.cos(angle) * radius;
+                    const y = Math.sin(angle) * radius;
+
+                    const node = document.createElement('div');
+                    node.className = 'orbit-node';
+                    node.style.cssText = `--node-accent: ${skill.accent}; --node-glow: ${skill.glow}; margin-left: ${x - 23}px; margin-top: ${y - 30}px;`;
+
+                    node.innerHTML = `<i class="${skill.icon}"></i><span>${skill.name}</span>`;
+                    track.appendChild(node);
+                });
+            };
+
+            buildOrbit('orbit-inner', innerSkills, innerRadius);
+            buildOrbit('orbit-outer', outerSkills, outerRadius);
+
+            // --- THREE.JS 3D SCROLL STORY ---
+            // Instead of a video, we build a 3D environment that we literally "fly through"
+            // as the user scrolls down the page.
+
+            const canvas = document.getElementById("webgl-canvas");
+
+            const scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x050505, 0.04); // Fade to deep tech black in the distance
+
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
+            camera.position.z = 5;
+            camera.position.x = 0;
+            camera.position.y = 0;
+
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Handle Window Resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            // Tech Material Blueprints
+            const techMaterial = new THREE.MeshBasicMaterial({
+                color: 0x38bdf8,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.25
+            });
+            const secondaryMaterial = new THREE.MeshBasicMaterial({
+                color: 0x4ade80, // Terminal Green
+                wireframe: true,
+                transparent: true,
+                opacity: 0.2
+            });
+
+            const objectsToAnimate = [];
+
+            // --- SCENE 1: The Start (Initialization) ---
+            // A complex Torus Knot representing complex logic/system
+            const knotGeo = new THREE.TorusKnotGeometry(2, 0.5, 120, 16);
+            const startNode = new THREE.Mesh(knotGeo, techMaterial);
+            startNode.position.set(2.5, 0, 0); // Positioned to the right to balance text on the left
+            scene.add(startNode);
+            objectsToAnimate.push({ obj: startNode, rotX: 0.005, rotY: 0.01 });
+
+            // --- SCENE 2: The Milestones (Education) ---
+            // Two massive rings we fly through, representing the two degrees
+            const ringGeo = new THREE.TorusGeometry(4, 0.05, 16, 100);
+            const ring1 = new THREE.Mesh(ringGeo, secondaryMaterial);
+            ring1.position.set(-2, 0, -12); // Left side
+            scene.add(ring1);
+
+            const ring2 = new THREE.Mesh(ringGeo, techMaterial);
+            ring2.position.set(-2.5, 0, -17);
+            scene.add(ring2);
+
+            objectsToAnimate.push({ obj: ring1, rotX: 0, rotY: 0.01, rotZ: 0.005 });
+            objectsToAnimate.push({ obj: ring2, rotX: 0.01, rotY: 0, rotZ: -0.005 });
+
+            // --- SCENE 3: The Arsenal (Skills) ---
+            // A floating grid of tech cubes representing structured knowledge and frameworks
+            const gridGroup = new THREE.Group();
+            const boxGeo = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+            for (let i = 0; i < 40; i++) {
+                const box = new THREE.Mesh(boxGeo, techMaterial);
+                box.position.set(
+                    (Math.random() - 0.5) * 12,
+                    (Math.random() - 0.5) * 12,
+                    (Math.random() - 0.5) * 8
+                );
+                box.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+                gridGroup.add(box);
+            }
+            gridGroup.position.set(0, 0, -28); // Center
+            scene.add(gridGroup);
+            objectsToAnimate.push({ obj: gridGroup, rotX: 0.002, rotY: 0.003 });
+
+            // --- SCENE 4: Live Operations (Projects) ---
+            // High-speed data lines passing by
+            const dataGroup = new THREE.Group();
+            const lineGeo = new THREE.CylinderGeometry(0.01, 0.01, 15, 8);
+            for (let i = 0; i < 60; i++) {
+                const line = new THREE.Mesh(lineGeo, i % 3 === 0 ? secondaryMaterial : techMaterial);
+                line.position.set(
+                    (Math.random() - 0.5) * 15,
+                    (Math.random() - 0.5) * 15,
+                    (Math.random() - 0.5) * 15
+                );
+                line.rotation.x = Math.PI / 2; // Pointed perfectly straight down the Z axis
+                dataGroup.add(line);
+            }
+            dataGroup.position.set(3, 0, -38); // Right side
+            scene.add(dataGroup);
+            objectsToAnimate.push({ obj: dataGroup, rotX: 0, rotY: 0, rotZ: 0.02 });
+
+            // --- SCENE 5: The Mansion / Fortified Core (Contact) ---
+            // Massive fortified crystal geometry representing secure access
+            const coreGeo = new THREE.IcosahedronGeometry(3.5, 1);
+            const secureCore = new THREE.Mesh(coreGeo, techMaterial);
+            secureCore.position.set(0, 0, -50);
+            scene.add(secureCore);
+
+            const outerCoreGeo = new THREE.IcosahedronGeometry(4.5, 0);
+            const outerCore = new THREE.Mesh(outerCoreGeo, secondaryMaterial);
+            outerCore.position.set(0, 0, -50);
+            scene.add(outerCore);
+
+            objectsToAnimate.push({ obj: secureCore, rotX: 0.01, rotY: 0.01 });
+            objectsToAnimate.push({ obj: outerCore, rotX: -0.005, rotY: -0.005 });
+
+            // Ambient Data Dust (Particles scattered throughout the whole flight path)
+            const particleGeometry = new THREE.BufferGeometry();
+            const particleCount = 1200;
+            const posArray = new Float32Array(particleCount * 3);
+            for (let i = 0; i < particleCount * 3; i += 3) {
+                posArray[i] = (Math.random() - 0.5) * 25; // x spread
+                posArray[i + 1] = (Math.random() - 0.5) * 25; // y spread
+                posArray[i + 2] = 5 - (Math.random() * 65);  // z spread (from start to past the core)
+            }
+            particleGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const particleMaterial = new THREE.PointsMaterial({
+                size: 0.04,
+                color: 0x38bdf8,
+                transparent: true,
+                opacity: 0.7
+            });
+            const particleMesh = new THREE.Points(particleGeometry, particleMaterial);
+            scene.add(particleMesh);
+
+            // --- SCROLL TO Z-AXIS MAPPING ---
+            let scrollProgress = 0;
+            let currentZ = 5;
+            let currentX = 0;
+
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.scrollY;
+                const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                scrollProgress = Math.max(0, Math.min(1, scrollTop / maxScroll));
+            }, { passive: true });
+
+            // -- RENDER ENGINE LOOP --
+            const tick = () => {
+                // 1. Move the Camera Z smoothly based on scroll
+                // Camera starts at Z=5 and pushes all the way to Z=-42 (right in front of the final core)
+                const targetZ = 5 - (scrollProgress * 47);
+                currentZ += (targetZ - currentZ) * 0.08; // 0.08 is the smoothing/lerping factor
+                camera.position.z = currentZ;
+
+                // 2. Add dynamic swaying motion to X based on depth
+                const targetX = Math.sin(scrollProgress * Math.PI * 2) * 1.5;
+                currentX += (targetX - currentX) * 0.05;
+                camera.position.x = currentX;
+
+                // 3. Rotate the 3D objects
+                objectsToAnimate.forEach(item => {
+                    item.obj.rotation.x += item.rotX;
+                    item.obj.rotation.y += item.rotY;
+                    if (item.rotZ) item.obj.rotation.z += item.rotZ;
+                });
+
+                // Very slowly rotate the ambient star field
+                particleMesh.rotation.z += 0.0003;
+
+                renderer.render(scene, camera);
+                window.requestAnimationFrame(tick);
+            };
+
+            tick();
+
+            // --- HTML UI CARDS ANIMATION OBSERVER ---
+            // (This ensures the glass cards still fade up smoothly)
+            const cardObserverOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const cardObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    } else {
+                        entry.target.classList.remove('visible');
+                    }
+                });
+            }, cardObserverOptions);
+
+            document.querySelectorAll('.glass-card').forEach(card => {
+                cardObserver.observe(card);
+            });
+        });
+
+    </script>
+    <!--script src="script.js"></script>--
+</body>
+
+</html>
